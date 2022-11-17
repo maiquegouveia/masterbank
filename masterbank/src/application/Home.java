@@ -11,7 +11,10 @@ import com.opencsv.CSVWriter;
 import java.util.List;
 import java.util.Random;
 import entities.SendPix;
-import entities.Boleto;
+import entities.GetBoletoValue;
+import entities.GetBoletoStatus;
+import entities.UpdateBoleto;
+import entities.BoletoPayment;
 
 public class Home {
 	public String username;
@@ -22,6 +25,7 @@ public class Home {
 	String phoneNumber;
 	String balance;
 	double doubleBalance;
+	double doubleInvestments;
 	String investments;
 	String cardNumber;
 	String expirationDate = "10/25";
@@ -126,7 +130,7 @@ public class Home {
 			System.out.println("CPF: " + cpf);
 			System.out.println("Código Pix: " + pixNumber);
 			System.out.println("\n1 - Fazer Pix");
-			System.out.println("2 - Sair");
+			System.out.println("2 - Sair\n");
 			System.out.println("Escolha uma opção -->");
 			menuOption = scan.nextInt();
 			
@@ -232,7 +236,11 @@ public class Home {
 	}
 
 	public void payBoleto() {
-		Boleto boleto = new Boleto();
+		GetBoletoStatus getstatus = new GetBoletoStatus();
+		GetBoletoValue getvalue = new GetBoletoValue();
+		BoletoPayment payment = new BoletoPayment();
+		UpdateBoleto upboleto = new UpdateBoleto();
+		
 		ReadFiles();
 		doubleBalance = Double.parseDouble(balance);
 		
@@ -240,11 +248,10 @@ public class Home {
 		System.out.println("Saldo: R$ " + doubleBalance);
 		System.out.println("\nDigite o código de barras do boleto:");
 		String boletoCode = scan.next();
-		boleto.boletoCode = boletoCode;
-		int status = boleto.GetStatus();
+		int status = getstatus.GetStatus(boletoCode);
 		
 		if (status == 0) {
-			String strValue = boleto.GetValue();
+			String strValue = getvalue.GetValue(boletoCode);
 			Double value = Double.parseDouble(strValue);
 			int continueOption;
 			do {
@@ -262,12 +269,12 @@ public class Home {
 						continueOption = 2;
 						break;
 					} else {
-						String valid = boleto.Payment();
-						if (valid == "1") {
+						int valid = payment.Payment(boletoCode);
+						if (valid == 1) {
 							doubleBalance = doubleBalance - value;
 							balance = Double.toString(doubleBalance);
 							Update();
-							boleto.UpdateBoleto();
+							upboleto.Update(boletoCode);
 							System.out.println("\nO pagamento do boleto foi realizado com sucesso.");
 							continueOption = 2;
 						} else {
@@ -288,8 +295,79 @@ public class Home {
 		} else if (status == 1) {
 			System.out.println("\nEste boleto já foi pago.");
 		} else {
-			System.out.println("\nBoleto não encontrado .");
+			System.out.println("\nBoleto não encontrado.");
 		}
+	}
+	
+	public void Invest() {
+		ReadFiles();
+		doubleBalance = Double.parseDouble(balance);
+		doubleInvestments = Double.parseDouble(investments);
+		int option;
+		do {
+			System.out.println("\nMeus Investimentos");
+			System.out.println("Dinheiro Investido: R$ " + doubleInvestments);
+			System.out.println("Saldo: R$ " + doubleBalance);
+			System.out.println("\n1 - Fazer Investimento");
+			System.out.println("2 - Retirar Investimento");
+			System.out.println("3 - Sair");
+			System.out.println("\nEscolha uma opção -->");
+			option = scan.nextInt();
+			double amount;
+			switch(option) {
+				case 1:
+					System.out.println("\nQuanto você deseja investir?");
+					amount = scan.nextDouble();
+					if(amount > doubleBalance) {
+						System.out.println("\nSem saldo suficiente para realizar a operação.");
+					} else {
+						int check = 0;
+						try {
+							doubleBalance = doubleBalance - amount;
+							balance = Double.toString(doubleBalance);
+							doubleInvestments = doubleInvestments + amount;
+							investments = Double.toString(doubleInvestments);
+						} catch (Exception e){
+							System.out.println("\nOcorreu um erro. Tente novamente mais tarde.");
+							check = 1;
+						} finally {
+							if(check == 0) {
+								Update();
+								System.out.println("\nOperação realizada com sucesso.");
+							}
+						}
+					}
+					break;
+				case 2:
+					System.out.println("\nQuanto você deseja tirar de investimento?");
+					amount = scan.nextDouble();
+					if(amount > doubleInvestments) {
+						System.out.println("\nSem saldo suficiente para realizar a operação.");
+					} else {
+						int check = 0;
+						try {
+							doubleBalance = doubleBalance + amount;
+							balance = Double.toString(doubleBalance);
+							doubleInvestments = doubleInvestments - amount;
+							investments = Double.toString(doubleInvestments);
+						} catch (Exception e) {
+							System.out.println("\nOcorreu um erro. Tente novamente mais tarde.");
+							check = 1;
+						} finally {
+							if(check == 0) {
+								Update();
+								System.out.println("\nOperação realizada com sucesso.");
+							}
+						}
+					}
+					break;
+				case 3:
+					System.out.println("\nVoltando ao menu principal...");
+					break;
+				default:
+					System.out.println("\nOpção inválida.");
+			}
+		} while (option != 3);
 	}
 	
 	public void  BankHome(){
@@ -302,7 +380,7 @@ public class Home {
 			System.out.println("1 - Pagamentos");
 			System.out.println("2 - Cartão");
 			System.out.println("3 - Pix");
-			System.out.println("4 - Investir");
+			System.out.println("4 - Investimentos");
 			System.out.println("5 - Recarga");
 			System.out.println("6 - Depósito");
 			System.out.println("7 - Sair");
@@ -323,6 +401,7 @@ public class Home {
 				Pix();
 				break;
 			case 4:
+				Invest();
 				break;
 			case 5:
 				TopUpPhone();
