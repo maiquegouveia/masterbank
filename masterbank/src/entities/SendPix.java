@@ -21,6 +21,7 @@ public class SendPix {
 	String expirationDate;
 	String newSecurityCode;
 	String pixNumber;
+	String email;
 	Scanner scan = new Scanner(System.in);
 	
 	public double Send() {
@@ -28,7 +29,7 @@ public class SendPix {
 		int valid = 0;
 		
 		try {
-			String filePath = "C:\\Users\\Maique\\Desktop\\accounts.csv";
+			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
 			File file = new File(filePath);
 			Scanner scanf = new Scanner(file);
 			
@@ -38,8 +39,8 @@ public class SendPix {
 				lineContent = currentLine.split("[,]", 0);
 				String checkCodPix = lineContent[6];
 				String checkCpf = lineContent[0];
-				
-				if (pixKey.equals(checkCodPix) || pixKey.equals(checkCpf)) {
+				String checkEmail = lineContent[7];
+				if (pixKey.equals(checkCodPix) || pixKey.equals(checkCpf) || pixKey.equals(checkEmail)) {
 					cpf = lineContent[0];
 					balance = lineContent[1];
 					investments = lineContent[2];
@@ -47,6 +48,7 @@ public class SendPix {
 					expirationDate = lineContent[4];
 					newSecurityCode = lineContent[5];
 					pixNumber = lineContent[6];
+					email = lineContent[7];
 					valid = 1;
 				}
 			}
@@ -56,33 +58,33 @@ public class SendPix {
 		}
 		
 		if (valid == 1) {
-			System.out.println("Qual o valor da transferência?");
+			System.out.println("Qual o valor da transferencia?");
 			double amountToSend = scan.nextDouble();
 			if (amountToSend > doubleBalance) {
-				System.out.println("Valor maior que saldo da conta.");
+				System.out.println("\nSem saldo suficiente para realizar a operacao.");
 			} else {
 				currentBalance = Double.parseDouble(balance);
 				currentBalance = currentBalance + amountToSend;
 				balance = Double.toString(currentBalance);
 				doubleBalance = doubleBalance - amountToSend;
 				sendPix();
-				System.out.println("Transferência pix realizada com sucesso.");
+				System.out.println("Transferencia pix realizada com sucesso.");
 			}
 		}
 		return doubleBalance;
 	}
 	
 	public void sendPix() {
-		Path path = Paths.get("C:\\Users\\Maique\\Desktop\\accounts.csv");
+		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
 		Charset charset = StandardCharsets.UTF_8;
 		
 		try { 
 			List<String> lines = Files.readAllLines(path, charset);
-			String filePath = "C:\\Users\\Maique\\Desktop\\accounts.csv";
+			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
 			File file = new File(filePath);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
-			String [] newData = {cpf, balance, investments, newCardNumber, expirationDate, newSecurityCode, pixNumber};
+			String [] newData = {cpf, balance, investments, newCardNumber, expirationDate, newSecurityCode, pixNumber, email};
 			for (String line : lines) {
 				String currentLine = line;
 				currentLine = currentLine.replace("\"", "");

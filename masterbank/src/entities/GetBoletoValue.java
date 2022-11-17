@@ -7,7 +7,7 @@ public class GetBoletoValue {
 	
 	public String GetValue(String boletoCode) {
 		String value = "";
-		String filePath = "C:\\Users\\Maique\\Desktop\\deposits.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try {
 			File file = new File(filePath);
 			Scanner scan = new Scanner(file);

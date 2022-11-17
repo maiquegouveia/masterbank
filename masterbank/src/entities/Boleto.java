@@ -19,9 +19,10 @@ public class Boleto {
 	String expirationDate = "10/25";
 	String securityCode;
 	String pixNumber;
+	String email;
 	
 	public int GetStatus() {
-		String filePath = "C:\\Users\\Maique\\Desktop\\deposits.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		int status = 2;
 		try{
 			File file = new File(filePath);
@@ -46,7 +47,7 @@ public class Boleto {
 	
 	public String GetValue() {
 		String value = "";
-		String filePath = "C:\\Users\\Maique\\Desktop\\deposits.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try {
 			File file = new File(filePath);
 			Scanner scan = new Scanner(file);
@@ -68,7 +69,7 @@ public class Boleto {
 	}
 
 	public void GetCpf() {
-		String filePath = "C:\\Users\\Maique\\Desktop\\deposits.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try{
 			File file = new File(filePath);
 			Scanner scan = new Scanner(file);
@@ -89,12 +90,12 @@ public class Boleto {
 	
 	public String Payment() {
 		GetCpf();
-		Path path = Paths.get("C:\\Users\\Maique\\Desktop\\accounts.csv");
+		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
 		Charset charset = StandardCharsets.UTF_8;
 		String valid = "0";
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Maique\\Desktop\\accounts.csv");
+			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {
@@ -106,6 +107,7 @@ public class Boleto {
 				cardNumber = lineContent[3];
 				securityCode = lineContent[5];
 				pixNumber = lineContent[6];
+				email = lineContent[7];
 				
 				if (cpf.equals(checkCpf)) {
 					String strValue = GetValue();
@@ -113,7 +115,7 @@ public class Boleto {
 					Double value = Double.parseDouble(strValue);
 					currentBalance = currentBalance + value;
 					balance = Double.toString(currentBalance);
-					String [] data = {cpf, balance, investments, cardNumber, expirationDate, securityCode, pixNumber};
+					String [] data = {cpf, balance, investments, cardNumber, expirationDate, securityCode, pixNumber, email};
 					writer.writeNext(data);
 					valid = "1";
 					writer.close();
@@ -130,11 +132,11 @@ public class Boleto {
 	}
 
 	public void UpdateBoleto(){
-		Path path = Paths.get("C:\\Users\\Maique\\Desktop\\deposits.csv");
+		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
 		Charset charset = StandardCharsets.UTF_8;
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Maique\\Desktop\\deposits.csv");
+			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {

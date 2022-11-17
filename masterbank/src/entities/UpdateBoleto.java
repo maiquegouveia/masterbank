@@ -14,11 +14,11 @@ import com.opencsv.CSVWriter;
 public class UpdateBoleto {
 	
 	public void Update(String boletoCode) {
-		Path path = Paths.get("C:\\Users\\Maique\\Desktop\\deposits.csv");
+		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
 		Charset charset = StandardCharsets.UTF_8;
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Maique\\Desktop\\deposits.csv");
+			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {

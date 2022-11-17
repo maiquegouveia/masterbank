@@ -7,7 +7,7 @@ public class CheckIfExists {
 	public int position;
 	
 	public int Check() {
-		String filePath = "C:\\Users\\Maique\\Desktop\\usernames.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
 		int valid = 0;
 		
 		try {

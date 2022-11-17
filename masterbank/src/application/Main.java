@@ -28,12 +28,12 @@ public class Main {
 			System.out.println("1 - Acessar Conta");
 			System.out.println("2 - Abrir Conta");
 			System.out.println("3 - Sair");
-			System.out.println("\nEscolha uma opção -->");
+			System.out.println("\nEscolha uma opcao -->");
 			menuOption = scan.nextInt();
 			
 			switch(menuOption){
 			case 1:
-				System.out.println("\nDigite o nome de usuário:");
+				System.out.println("\nDigite o nome de usuario:");
 				lg.username = scan.next();
 				System.out.println("\nDigite a senha:");
 				lg.password = scan.next();
@@ -46,19 +46,19 @@ public class Main {
 					home.password = lg.password;
 					home.BankHome();
 				} else {
-					System.out.println("\nNome de usuário ou senha incorretos.");
+					System.out.println("\nNome de usu�rio ou senha incorretos.");
 				}
 				break;
 			case 2:
 				int i = 0;
-				System.out.println("\nDigite o nome de usuário:");
+				System.out.println("\nDigite o nome de usuario:");
 				username = scan.next();
 				ci.info = username;
 				ci.position = 0;
 				int containsUsername = ci.Check();
 				
 				if (containsUsername == 1) {
-					System.out.println("\nEste nome de usuário já está cadastrado.");
+					System.out.println("\nEste nome de usuario ja esta cadastrado.");
 					break;
 				}
 				
@@ -69,11 +69,11 @@ public class Main {
 				int containsEmail = ci.Check();
 				
 				if (containsEmail == 1) {
-					System.out.println("\nEste email já está cadastrado.");
+					System.out.println("\nEste email ja esta cadastrado.");
 					break;
 				}
 				
-				System.out.println("\nDigite o seu número de telefone com DDD:");
+				System.out.println("\nDigite o seu numero de telefone com DDD:");
 				phoneNumber = scan.next();
 				int numberSize = phoneNumber.length();
 				if (numberSize == 11) {
@@ -82,15 +82,15 @@ public class Main {
 					int containsPhoneNumber = ci.Check();
 					
 					if (containsPhoneNumber == 1) {
-						System.out.println("\nEste número de telefone já está cadastrado.");
+						System.out.println("\nEste numero de telefone ja esta cadastrado.");
 						break;
 					}
 				} else {
-					System.out.println("\nNúmero de telefone inválido.");
+					System.out.println("\nNumero de telefone invalido.");
 					break;
 				}
 				
-				System.out.println("\nDigite o seu cpf APENAS NÚMEROS:");
+				System.out.println("\nDigite o seu cpf APENAS NUMEROS:");
 				cpf = scan.next();
 				int cpfSize = cpf.length();
 				if(cpfSize == 11) {
@@ -99,18 +99,18 @@ public class Main {
 					int containsCpf = ci.Check();
 					
 					if (containsCpf == 1) {
-						System.out.println("\nEste número de cpf já está cadastrado.");
+						System.out.println("\nEste numero de cpf ja esta cadastrado.");
 						break;
 					}
 				} else {
-					System.out.println("\nNúmero de cpf inválido.");
+					System.out.println("\nNumero de cpf invalido.");
 					break;
 				}
 				
 				System.out.println("\nData de Nascimento");
 				System.out.println("Digite o dia do seu nascimento:");
 				bd.day = scan.next();
-				System.out.println("Digite o mês do seu nascimento:");
+				System.out.println("Digite o mes do seu nascimento:");
 				bd.month = scan.next();
 				System.out.println("Digite o ano do seu nascimento:");
 				bd.year = scan.next();
@@ -130,7 +130,7 @@ public class Main {
 						i = 1;
 						Register register = new Register(username, email, password, strDate, cpf, phoneNumber);
 					} else {
-						System.out.println("\nAs senhas não coincidem.");
+						System.out.println("\nAs senhas nao coincidem.");
 					}
 				} while(i != 1);
 				break;
@@ -138,7 +138,7 @@ public class Main {
 				System.out.println("\nSaindo...");
 				break;
 			default:
-				System.out.println("\nOpção inválida.");
+				System.out.println("\nOpcao invalida.");
 			}
 			
 		} while (menuOption != 3);

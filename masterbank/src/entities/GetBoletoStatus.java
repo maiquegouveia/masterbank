@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class GetBoletoStatus {
 	
 	public int GetStatus(String boletoCode) {
-		String filePath = "C:\\Users\\Maique\\Desktop\\deposits.csv";
+		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		int status = 2;
 		try{
 			File file = new File(filePath);

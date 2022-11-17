@@ -19,13 +19,13 @@ public class BoletoPayment {
 		GetBoletoCpf getcpf = new GetBoletoCpf();
 		String cpf = getcpf.GetCpf(boletoCode);
 		
-		Path path = Paths.get("C:\\Users\\Maique\\Desktop\\accounts.csv");
+		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
 		Charset charset = StandardCharsets.UTF_8;
 		int valid = 0;
 		
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Maique\\Desktop\\accounts.csv");
+			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {
@@ -38,6 +38,7 @@ public class BoletoPayment {
 				String expirationDate = lineContent[4];
 				String securityCode = lineContent[5];
 				String pixNumber = lineContent[6];
+				String email = lineContent[7];
 				
 				if (cpf.equals(checkCpf)) {
 					String strValue = getvalue.GetValue(boletoCode);
@@ -45,7 +46,7 @@ public class BoletoPayment {
 					Double value = Double.parseDouble(strValue);
 					currentBalance = currentBalance + value;
 					balance = Double.toString(currentBalance);
-					String [] data = {cpf, balance, investments, cardNumber, expirationDate, securityCode, pixNumber};
+					String [] data = {cpf, balance, investments, cardNumber, expirationDate, securityCode, pixNumber, email};
 					writer.writeNext(data);
 					valid = 1;
 				} else {

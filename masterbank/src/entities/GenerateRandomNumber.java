@@ -10,8 +10,8 @@ public class GenerateRandomNumber {
 	
 	public String Random() {
 		Random rand = new Random();
-		String filePathData1 = "C:\\Users\\Maique\\Desktop\\usernames.csv";
-		String filePathData2 = "C:\\Users\\Maique\\Desktop\\accounts.csv";
+		String filePathData1 = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
+		String filePathData2 = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
 		String strRandomNumber = "";
 		int upperbound;
 		try {
