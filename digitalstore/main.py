@@ -2,8 +2,8 @@ import csv
 
 global usernames_path
 global accounts_path
-usernames_path = "C:\\Users\\Aluno\\Downloads\\masterbank-main\\digitalstore\\data\\usernames.csv"
-accounts_path = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv"
+usernames_path = "C:\\Users\\Maique\\Desktop\\MasterBank\\digitalstore\\data\\usernames.csv"
+accounts_path = "C:\\Users\\Maique\\Desktop\\MasterBank\\masterbank\\src\\data\\accounts.csv"
 def login():
     username = input("\nDigite o seu nome de usuário: ").upper()
     password = input("Digite a sua senha: ")
