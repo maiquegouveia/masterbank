@@ -15,12 +15,14 @@ import entities.GetBoletoValue;
 import entities.GetBoletoStatus;
 import entities.UpdateBoleto;
 import entities.BoletoPayment;
+import entities.GetFiles;
+import entities.AdmMethods;
 
 public class Home {
 	public String username;
 	public String password;
 	String email;
-	String cpf;
+	String cpf = "";
 	String birthDate;
 	String phoneNumber;
 	String balance;
@@ -31,14 +33,15 @@ public class Home {
 	String expirationDate = "10/25";
 	String securityCode;
 	String pixNumber;
+	String value;
 	Scanner scan = new Scanner(System.in);
-
+	GetFiles getf = new GetFiles();
 	
 	public void ReadFiles() {
-		// Recebendo as informaÃ§Ãµes da conta do usuÃ¡rio \\
+		// Recebendo as informações da conta do usuário \\
 		try {
-			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
-			File file = new File(filePath);
+
+			File file = new File(getf.pathUsernames);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextLine()) {
 				String currentLine = scan.nextLine();
@@ -50,7 +53,8 @@ public class Home {
 				String lineCpf = lineContent[3];
 				String lineEmail = lineContent[4];
 				
-				if(username.equals(lineUsername)) {
+				if(username.equals(lineUsername) || cpf.equals(lineCpf)) {
+					username = lineUsername;
 					birthDate = lineBirthDate;
 					phoneNumber = linePhoneNumber;
 					cpf = lineCpf;
@@ -62,10 +66,9 @@ public class Home {
 			System.out.println(e);
 		}
 		
-		// Recebendo informaÃ§Ãµes bancÃ¡rias do usuÃ¡rio \\
+		// Recebendo informações bancárias do usuário \\
 		try {
-			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
-			File file = new File(filePath);
+			File file = new File(getf.pathAccounts);
 			Scanner scan = new Scanner(file);
 			while(scan.hasNextLine()) {
 				String currentLine = scan.nextLine();
@@ -93,13 +96,13 @@ public class Home {
 	}
 	
 	public void Update() {
-		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
+		// Aqui estamos atualizando os dados bancários do usuário
+		Path path = Paths.get(getf.pathAccounts);
 		Charset charset = StandardCharsets.UTF_8;
 		
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
-			File file = new File(filePath);
+			File file = new File(getf.pathAccounts);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			String [] data = {cpf, balance, investments, cardNumber, expirationDate, securityCode, pixNumber, email};
@@ -124,15 +127,15 @@ public class Home {
 		do {
 			ReadFiles();
 			doubleBalance = Double.parseDouble(balance);
-			System.out.println("\nArea Pix");
+			System.out.println("\nÁrea Pix");
 			System.out.println("Saldo: R$ " + doubleBalance);
 			System.out.println("\nSuas chaves Pix:");
 			System.out.println("CPF: " + cpf);
-			System.out.println("Codigo pix: " + pixNumber);
+			System.out.println("Chave Pix: " + pixNumber);
 			System.out.println("Email: " + email);
 			System.out.println("\n1 - Fazer Pix");
-			System.out.println("2 - Sair\n");
-			System.out.println("Escolha uma opcao -->");
+			System.out.println("2 - Sair");
+			System.out.println("\nEscolha uma opção -->");
 			menuOption = scan.nextInt();
 			
 			switch(menuOption) {
@@ -149,7 +152,7 @@ public class Home {
 				System.out.println("\nVoltando ao menu principal...");
 				break;
 			default:
-				System.out.println("\nOpcao invalida.");
+				System.out.println("\nOpção inválida.");
 			}
 		} while (menuOption != 2);
 	}
@@ -158,7 +161,7 @@ public class Home {
 		Random rand = new Random();
 		double amountToDeposit;
 	
-		System.out.println("Quanto voce quer depositar na conta?");
+		System.out.println("\nQuanto você quer depositar na conta?");
 		amountToDeposit = scan.nextDouble();
 		
 		int valid = 0;
@@ -170,8 +173,7 @@ public class Home {
 			strRandomNumber = Integer.toString(intRandom);
 			String value = Double.toString(amountToDeposit);
 			
-			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
-			File file = new File(filePath);
+			File file = new File(getf.pathDeposits);
 			FileWriter outputfile = new FileWriter(file, true);
 			CSVWriter writer = new CSVWriter(outputfile);
 			Scanner scanf = new Scanner(file);
@@ -197,10 +199,10 @@ public class Home {
 		}
 		
 		if (valid == 1) {
-			System.out.println("Boleto para deposito gerado com sucesso.");
-			System.out.println("Codigo de barras: " + strRandomNumber);
+			System.out.println("\nBoleto para depósito gerado com sucesso.");
+			System.out.println("Código de barras: " + strRandomNumber);
 		} else {
-			System.out.println("Ocorreu um erro. Tente novamente mais tarde.");
+			System.out.println("\nOcorreu um erro. Tente novamente mais tarde.");
 		}
 	}
 	
@@ -209,18 +211,18 @@ public class Home {
 		doubleBalance = Double.parseDouble(balance);
 		System.out.println("Recarga Celular");
 		System.out.println("Saldo: R$ " + doubleBalance);
-		System.out.println("\nDigite o numero de telefone:");
+		System.out.print("\nDigite o número do celular: ");
 		String number = scan.next();
 		int numberSize = number.length();
 		
 		if (numberSize == 11) {
-			System.out.println("Confirmar numero de telefone:");
+			System.out.println("\nConfirmar número do celular: ");
 			String checkNumber = scan.next();
 			if (checkNumber.equals(number)) {
-				System.out.println("Digite o valor da recarga:");
+				System.out.println("\nDigite o valor da recarga: ");
 				double value = scan.nextDouble();
 				if (value > doubleBalance) {
-					System.out.println("\nSem saldo suficiente para realizar a operacao.");
+					System.out.println("\nSem saldo suficiente para realizar a operação.");
 				} else {
 					doubleBalance = doubleBalance - value;
 					balance = Double.toString(doubleBalance);
@@ -228,10 +230,10 @@ public class Home {
 					System.out.println("\nRecarga realizada com sucesso.");
 				}
 			} else {
-				System.out.println("\nNumeros nao coincidem.");
+				System.out.println("\nNúmeros não coincidem.");
 			}
 		} else {
-			System.out.println("\nNumero de telefone invalido.");
+			System.out.println("\nNúmero inválido.");
 		}
 		
 	}
@@ -247,7 +249,7 @@ public class Home {
 		
 		System.out.println("\nPagamento de Boletos");
 		System.out.println("Saldo: R$ " + doubleBalance);
-		System.out.println("\nDigite o codigo de barras do boleto:");
+		System.out.println("\nDigite o código de barras do boleto:");
 		String boletoCode = scan.next();
 		int status = getstatus.GetStatus(boletoCode);
 		
@@ -256,17 +258,17 @@ public class Home {
 			Double value = Double.parseDouble(strValue);
 			int continueOption;
 			do {
-				System.out.println("\nO valor deste boleto e R$ " + strValue);
+				System.out.println("\nO valor deste boleto é R$ " + strValue);
 				System.out.println("Deseja proseguir com o pagamento?");
 				System.out.println("\n1 - Sim");
-				System.out.println("2 - Nao");
-				System.out.println("\nEscolha uma opcao -->");
+				System.out.println("2 - Não");
+				System.out.println("\nEscolha uma opção -->");
 				continueOption = scan.nextInt();
 				
 				switch(continueOption) {
 				case 1:
 					if (value > doubleBalance) {
-						System.out.println("\nSem saldo suficiente para realizar a operacao.");
+						System.out.println("\nSem saldo suficiente para realizar a operação.");
 						continueOption = 2;
 						break;
 					} else {
@@ -289,14 +291,14 @@ public class Home {
 					System.out.println("\nVoltando ao menu principal...");
 					break;
 				default:
-					System.out.println("\nOpcao invalida.");
+					System.out.println("\nOpção inválida.");
 				}
 			} while (continueOption != 2);
 			
 		} else if (status == 1) {
-			System.out.println("\nEste boleto ja foi pago.");
+			System.out.println("\nEste boleto já foi pago.");
 		} else {
-			System.out.println("\nBoleto nao encontrado.");
+			System.out.println("\nBoleto não encontrado.");
 		}
 	}
 	
@@ -312,15 +314,15 @@ public class Home {
 			System.out.println("\n1 - Fazer Investimento");
 			System.out.println("2 - Retirar Investimento");
 			System.out.println("3 - Sair");
-			System.out.println("\nEscolha uma opcao -->");
+			System.out.println("\nEscolha uma opção -->");
 			option = scan.nextInt();
 			double amount;
 			switch(option) {
 				case 1:
-					System.out.println("\nQuanto voce deseja investir?");
+					System.out.println("\nQuanto você deseja investir?");
 					amount = scan.nextDouble();
 					if(amount > doubleBalance) {
-						System.out.println("\nSem saldo suficiente para realizar a operacao.");
+						System.out.println("\nSem saldo suficiente para realizar a operação.");
 					} else {
 						int check = 0;
 						try {
@@ -334,16 +336,16 @@ public class Home {
 						} finally {
 							if(check == 0) {
 								Update();
-								System.out.println("\nOperacao realizada com sucesso.");
+								System.out.println("\nOperação realizada com sucesso.");
 							}
 						}
 					}
 					break;
 				case 2:
-					System.out.println("\nQuanto voce deseja tirar de investimento?");
+					System.out.println("\nQuanto você deseja tirar de investimento?");
 					amount = scan.nextDouble();
 					if(amount > doubleInvestments) {
-						System.out.println("\nSem saldo suficiente para realizar a operacao.");
+						System.out.println("\nSem saldo suficiente para realizar a operação.");
 					} else {
 						int check = 0;
 						try {
@@ -357,7 +359,7 @@ public class Home {
 						} finally {
 							if(check == 0) {
 								Update();
-								System.out.println("\nOperacao realizada com sucesso.");
+								System.out.println("\nOperação realizada com sucesso.");
 							}
 						}
 					}
@@ -366,7 +368,7 @@ public class Home {
 					System.out.println("\nVoltando ao menu principal...");
 					break;
 				default:
-					System.out.println("\nOpcao invalida.");
+					System.out.println("\nopção inválida.");
 			}
 		} while (option != 3);
 	}
@@ -376,16 +378,16 @@ public class Home {
 		do {	
 			ReadFiles();
 			doubleBalance = Double.parseDouble(balance);
-			System.out.println("\nOla, " + username + "!");
+			System.out.println("\nOlá, " + username.toUpperCase() + "!");
 			System.out.println("Saldo: R$ " + doubleBalance + "\n");
 			System.out.println("1 - Pagamentos");
-			System.out.println("2 - Cartao");
+			System.out.println("2 - Cartão");
 			System.out.println("3 - Pix");
 			System.out.println("4 - Investimentos");
 			System.out.println("5 - Recarga");
-			System.out.println("6 - Deposito");
+			System.out.println("6 - Depósito por boleto");
 			System.out.println("7 - Sair");
-			System.out.println("\nEscolha uma opcao -->");
+			System.out.println("\nEscolha uma opção -->");
 			menuOption = scan.nextInt();
 			
 			switch(menuOption) {
@@ -393,10 +395,10 @@ public class Home {
 				payBoleto();
 				break;
 			case 2:
-				System.out.println("\nInformacoes do seu cartao:");
-				System.out.println("Numero do cartao: " + cardNumber);
-				System.out.println("Data de vencimento: " + expirationDate);
-				System.out.println("Codigo de validacao: " + securityCode);
+				System.out.println("\nInformações do seu Cartão:");
+				System.out.println("Número do Cartão: " + cardNumber);
+				System.out.println("Data de Vencimento: " + expirationDate);
+				System.out.println("Código de Validação: " + securityCode);
 				break;
 			case 3:
 				Pix();
@@ -411,10 +413,73 @@ public class Home {
 				DepositMoney();
 				break;
 			case 7:
+				System.out.println("\nFazendo logout...");
 				break;
 			default:
-				System.out.println("\nOpcao invalida.");
+				System.out.println("\nOpção inválida.");
 			}
 		} while (menuOption != 7);
+	}
+	
+	public void WorkerHome() {
+		int menuOption;
+		AdmMethods adm = new AdmMethods();
+		do {
+			ReadFiles();
+			System.out.println("\nOlá, " + username.toUpperCase() + "!");
+			System.out.println("Funcionário do MasterBank\n");
+			System.out.println("1 - Consultar Dados de Usuário");
+			System.out.println("2 - Alterar Dados de Usuário");
+			System.out.println("3 - Sair");
+			System.out.println("\nEscolha uma opção -->");
+			menuOption = scan.nextInt();
+			
+			switch(menuOption) {
+			case 1:
+				adm.ConsultUserData();
+				break;
+			case 2:
+				adm.ModifyUserData();
+				break;
+			case 3:
+				System.out.println("\nFazendo logout...");
+				break;
+			default:
+				System.out.println("\nOpção inválida.");
+			}
+		} while (menuOption != 3);
+	}
+
+	public void SudoHome() {
+		int menuOption;
+		AdmMethods adm = new AdmMethods();
+		do {
+			ReadFiles();
+			System.out.println("\nOlá, " + username.toUpperCase() + "!");
+			System.out.println("SuperUser Masterbank\n");
+			System.out.println("1 - Consultar Dados de Usuário");
+			System.out.println("2 - Alterar Dados de Usuário");
+			System.out.println("3 - Remover Usuário");
+			System.out.println("4 - Sair");
+			System.out.println("\nEscolha uma opção -->");
+			menuOption = scan.nextInt();
+			
+			switch(menuOption) {
+			case 1:
+				adm.ConsultUserData();
+				break;
+			case 2:
+				adm.ModifyUserData();
+				break;
+			case 3:
+				adm.RemoveUser();
+				break;
+			case 4:
+				System.out.println("\nFazendo logout...");
+				break;
+			default:
+				System.out.println("\nOpção inválida.");
+			}
+		} while (menuOption != 4);
 	}
 }

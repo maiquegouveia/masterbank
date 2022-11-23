@@ -28,37 +28,48 @@ public class Main {
 			System.out.println("1 - Acessar Conta");
 			System.out.println("2 - Abrir Conta");
 			System.out.println("3 - Sair");
-			System.out.println("\nEscolha uma opcao -->");
+			System.out.println("\nEscolha uma opção -->");
 			menuOption = scan.nextInt();
 			
 			switch(menuOption){
 			case 1:
-				System.out.println("\nDigite o nome de usuario:");
+				System.out.println("\nDigite o nome de usuário:");
 				lg.username = scan.next();
 				System.out.println("\nDigite a senha:");
 				lg.password = scan.next();
 				
-				int valid = lg.LoginCheck();
-	
-				if(valid == 1) {
+				String strValue = lg.LoginCheck();
+				int value = Integer.parseInt(strValue);
+				
+				if(value == 1) {
 					System.out.println("\nLogin feito com sucesso.");
 					home.username = lg.username;
 					home.password = lg.password;
 					home.BankHome();
+				} else if (value == 2) {
+					System.out.println("\nLogin feito com sucesso.");
+					home.username = lg.username;
+					home.password = lg.password;
+					home.WorkerHome();
+				} else if(value == 3) {
+					System.out.println("\nLogin feito com sucesso.");
+					home.username = lg.username;
+					home.password = lg.password;
+					home.SudoHome();
 				} else {
-					System.out.println("\nNome de usu�rio ou senha incorretos.");
+					System.out.println("\nNome de usuário ou senha incorretos.");
 				}
 				break;
 			case 2:
 				int i = 0;
-				System.out.println("\nDigite o nome de usuario:");
+				System.out.println("\nDigite o nome de usuário:");
 				username = scan.next();
 				ci.info = username;
 				ci.position = 0;
 				int containsUsername = ci.Check();
 				
 				if (containsUsername == 1) {
-					System.out.println("\nEste nome de usuario ja esta cadastrado.");
+					System.out.println("\nEste nome de usuário já está cadastrado.");
 					break;
 				}
 				
@@ -69,11 +80,11 @@ public class Main {
 				int containsEmail = ci.Check();
 				
 				if (containsEmail == 1) {
-					System.out.println("\nEste email ja esta cadastrado.");
+					System.out.println("\nEste email já está cadastrado.");
 					break;
 				}
 				
-				System.out.println("\nDigite o seu numero de telefone com DDD:");
+				System.out.println("\nDigite o seu número de telefone com DDD:");
 				phoneNumber = scan.next();
 				int numberSize = phoneNumber.length();
 				if (numberSize == 11) {
@@ -82,15 +93,15 @@ public class Main {
 					int containsPhoneNumber = ci.Check();
 					
 					if (containsPhoneNumber == 1) {
-						System.out.println("\nEste numero de telefone ja esta cadastrado.");
+						System.out.println("\nEste número de telefone já está cadastrado.");
 						break;
 					}
 				} else {
-					System.out.println("\nNumero de telefone invalido.");
+					System.out.println("\nNúmero de telefone inválido.");
 					break;
 				}
 				
-				System.out.println("\nDigite o seu cpf APENAS NUMEROS:");
+				System.out.println("\nDigite o seu cpf *APENAS NÚMEROS*:");
 				cpf = scan.next();
 				int cpfSize = cpf.length();
 				if(cpfSize == 11) {
@@ -99,18 +110,18 @@ public class Main {
 					int containsCpf = ci.Check();
 					
 					if (containsCpf == 1) {
-						System.out.println("\nEste numero de cpf ja esta cadastrado.");
+						System.out.println("\nEste número de cpf já está cadastrado.");
 						break;
 					}
 				} else {
-					System.out.println("\nNumero de cpf invalido.");
+					System.out.println("\nNúmero de cpf inválido.");
 					break;
 				}
 				
 				System.out.println("\nData de Nascimento");
 				System.out.println("Digite o dia do seu nascimento:");
 				bd.day = scan.next();
-				System.out.println("Digite o mes do seu nascimento:");
+				System.out.println("Digite o mês do seu nascimento:");
 				bd.month = scan.next();
 				System.out.println("Digite o ano do seu nascimento:");
 				bd.year = scan.next();
@@ -130,15 +141,15 @@ public class Main {
 						i = 1;
 						Register register = new Register(username, email, password, strDate, cpf, phoneNumber);
 					} else {
-						System.out.println("\nAs senhas nao coincidem.");
+						System.out.println("\nAs senhas não coincidem.");
 					}
 				} while(i != 1);
 				break;
 			case 3:
-				System.out.println("\nSaindo...");
+				System.out.println("\nEncerrando programa...");
 				break;
 			default:
-				System.out.println("\nOpcao invalida.");
+				System.out.println("\nOpção inválida.");
 			}
 			
 		} while (menuOption != 3);

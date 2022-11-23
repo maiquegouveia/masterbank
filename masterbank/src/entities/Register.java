@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import com.opencsv.CSVWriter;
 import java.util.Scanner;
 import entities.GenerateRandomNumber;
+import entities.GetFiles;
 
 public class Register {
 	private String username;
@@ -12,6 +13,8 @@ public class Register {
 	private String birthDate;
 	private String cpf;
 	private String phoneNumber;
+	String value = "1";
+	GetFiles getf = new GetFiles();
 	
 	public Register(String username, String email, int password, String birthDate, String cpf, String phoneNumber) {
 		this.username = username;
@@ -34,11 +37,10 @@ public class Register {
 		
 		// Aqui estamos escrevendo as informacoes pessoas do usuario no arquivo //
 		try {
-			String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
-			File file = new File(filePath);
+			File file = new File(getf.pathUsernames);
 			FileWriter outputfile = new FileWriter(file, true);
 			CSVWriter writer = new CSVWriter(outputfile);
-			String [] data = {username, birthDate, phoneNumber, cpf, email, strPassword};
+			String [] data = {username, birthDate, phoneNumber, cpf, email, strPassword, value};
 			writer.writeNext(data);
 			writer.close();
 			valid = 1;
@@ -63,8 +65,7 @@ public class Register {
 			random.isSecurity = 1;
 			newSecurityCode = random.Random();
 			try {
-				String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
-				File file = new File(filePath);
+				File file = new File(getf.pathAccounts);
 				FileWriter outputfile = new FileWriter(file, true);
 				CSVWriter writer = new CSVWriter(outputfile);
 				String [] data = {cpf, balance, investments, newCardNumber, expirationDate, newSecurityCode, pixNumber, email};
@@ -76,12 +77,12 @@ public class Register {
 				valid = 0;
 			}
 			if (valid == 1) {
-				System.out.println("Cadastro realizado.");
+				System.out.println("\nCadastro realizado.");
 			} else {
-				System.out.println("Cadastro nao realizado.");
+				System.out.println("\nCadastro não realizado.");
 			}
 		} else {
-			System.out.println("Cadastro nao realizado.");
+			System.out.println("\nCadastro não realizado.");
 		}
 		
 	}

@@ -1,17 +1,18 @@
 package entities;
 import java.util.Scanner;
 import java.io.File;
+import entities.GetFiles;
 
 public class Login {
 	public String username;
 	public String password;
-	String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
+	GetFiles getf = new GetFiles();
 	
-	public int LoginCheck(){
+	public String LoginCheck(){
 		String currentLine;
-		int valid = 0;
+		String value = "0";
 		try {
-			File file = new File(filePath);
+			File file = new File(getf.pathUsernames);
 			Scanner scan = new Scanner(file);
 			while(scan.hasNextLine()) {
 				currentLine = scan.nextLine();
@@ -22,9 +23,9 @@ public class Login {
 		
 				if (username.equals(checkUsername)){
 					if (password.equals(checkPassword)) {
-						valid = 1;
+						value = lineContent[6];
 						scan.close();
-						return valid;
+						return value;
 					}
 				} 
 			}
@@ -33,6 +34,6 @@ public class Login {
 			
 		}
 		
-		return valid;
+		return value;
 	}
 }

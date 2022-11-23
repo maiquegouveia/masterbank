@@ -2,16 +2,16 @@ package entities;
 import java.util.Random;
 import java.io.File;
 import java.util.Scanner;
+import entities.GetFiles;
 
 public class GenerateRandomNumber {
 	public int dataOption;
 	public int position;
 	public int isSecurity;
+	GetFiles getf = new GetFiles();
 	
 	public String Random() {
 		Random rand = new Random();
-		String filePathData1 = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
-		String filePathData2 = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv";
 		String strRandomNumber = "";
 		int upperbound;
 		try {
@@ -23,7 +23,7 @@ public class GenerateRandomNumber {
 			int intRandom = rand.nextInt(upperbound);
 			strRandomNumber = Integer.toString(intRandom);
 			if (dataOption == 1) {
-				File file = new File(filePathData1);
+				File file = new File(getf.pathUsernames);
 				Scanner scan = new Scanner(file);
 				while (scan.hasNextLine()) {
 					String currentLine = scan.nextLine();
@@ -36,7 +36,7 @@ public class GenerateRandomNumber {
 				}
 				scan.close();
 			} else if (dataOption == 2) {
-				File file = new File(filePathData2);
+				File file = new File(getf.pathAccounts);
 				Scanner scan = new Scanner(file);
 				while (scan.hasNextLine()) {
 					String currentLine = scan.nextLine();

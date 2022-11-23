@@ -1,17 +1,17 @@
 package entities;
 import java.io.File;
 import java.util.Scanner;
+import entities.GetFiles;
 
 public class CheckIfExists {
 	public String info;
 	public int position;
+	GetFiles getf = new GetFiles();
 	
 	public int Check() {
-		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\usernames.csv";
 		int valid = 0;
-		
 		try {
-			File file = new File(filePath);
+			File file = new File(getf.pathUsernames);
 			Scanner scan = new Scanner(file);
 			
 			while(scan.hasNextLine()) {

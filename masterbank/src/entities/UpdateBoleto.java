@@ -1,5 +1,4 @@
 package entities;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.Charset;
@@ -8,17 +7,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
 import com.opencsv.CSVWriter;
+import entities.GetFiles;
 
 public class UpdateBoleto {
+	GetFiles getf = new GetFiles();
 	
 	public void Update(String boletoCode) {
-		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
+		Path path = Paths.get(getf.pathDeposits);
 		Charset charset = StandardCharsets.UTF_8;
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
+			File file = new File(getf.pathDeposits);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {

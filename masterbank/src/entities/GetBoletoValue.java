@@ -1,15 +1,15 @@
 package entities;
-
 import java.io.File;
 import java.util.Scanner;
+import entities.GetFiles;
 
 public class GetBoletoValue {
+	GetFiles getf = new GetFiles();
 	
 	public String GetValue(String boletoCode) {
 		String value = "";
-		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try {
-			File file = new File(filePath);
+			File file = new File(getf.pathDeposits);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextLine()) {
 				String currentLine = scan.nextLine();

@@ -1,5 +1,4 @@
 package entities;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.Charset;
@@ -11,21 +10,23 @@ import java.util.List;
 import com.opencsv.CSVWriter;
 import entities.GetBoletoCpf;
 import entities.GetBoletoValue;
+import entities.GetFiles;
 
 public class BoletoPayment {
+	GetFiles getf = new GetFiles();
 	
 	public int Payment(String boletoCode) {
 		GetBoletoValue getvalue = new GetBoletoValue();
 		GetBoletoCpf getcpf = new GetBoletoCpf();
 		String cpf = getcpf.GetCpf(boletoCode);
 		
-		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
+		Path path = Paths.get(getf.pathAccounts);
 		Charset charset = StandardCharsets.UTF_8;
 		int valid = 0;
 		
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
+			File file = new File(getf.pathAccounts);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {

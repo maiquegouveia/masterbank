@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import entities.GetFiles;
 
 public class Boleto {
 	public String boletoCode;
@@ -20,12 +21,12 @@ public class Boleto {
 	String securityCode;
 	String pixNumber;
 	String email;
+	GetFiles getf = new GetFiles();
 	
 	public int GetStatus() {
-		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		int status = 2;
 		try{
-			File file = new File(filePath);
+			File file = new File(getf.pathDeposits);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextLine()) {
 				String currentLine = scan.nextLine();
@@ -47,9 +48,8 @@ public class Boleto {
 	
 	public String GetValue() {
 		String value = "";
-		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try {
-			File file = new File(filePath);
+			File file = new File(getf.pathDeposits);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextLine()) {
 				String currentLine = scan.nextLine();
@@ -69,9 +69,8 @@ public class Boleto {
 	}
 
 	public void GetCpf() {
-		String filePath = "C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv";
 		try{
-			File file = new File(filePath);
+			File file = new File(getf.pathDeposits);
 			Scanner scan = new Scanner(file);
 			while (scan.hasNextLine()) {
 				String currentLine = scan.nextLine();
@@ -90,12 +89,12 @@ public class Boleto {
 	
 	public String Payment() {
 		GetCpf();
-		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
+		Path path = Paths.get(getf.pathAccounts);
 		Charset charset = StandardCharsets.UTF_8;
 		String valid = "0";
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\accounts.csv");
+			File file = new File(getf.pathAccounts);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {
@@ -132,11 +131,11 @@ public class Boleto {
 	}
 
 	public void UpdateBoleto(){
-		Path path = Paths.get("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
+		Path path = Paths.get(getf.pathDeposits);
 		Charset charset = StandardCharsets.UTF_8;
 		try {
 			List<String> lines = Files.readAllLines(path, charset);
-			File file = new File("C:\\Users\\Aluno\\eclipse-workspace\\masterbank_final\\src\\data\\deposits.csv");
+			File file = new File(getf.pathDeposits);
 			FileWriter fwriter = new FileWriter(file);
 			CSVWriter writer = new CSVWriter(fwriter);
 			for (String line : lines) {
