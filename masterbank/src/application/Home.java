@@ -17,6 +17,7 @@ import entities.UpdateBoleto;
 import entities.BoletoPayment;
 import entities.GetFiles;
 import entities.AdmMethods;
+import entities.CheckIfExists;
 
 public class Home {
 	public String username;
@@ -373,8 +374,37 @@ public class Home {
 		} while (option != 3);
 	}
 	
+	public void UpdateInvestments() {
+		Path path = Paths.get(getf.pathAccounts);
+		Charset charset = StandardCharsets.UTF_8;
+		try {
+			List<String> lines = Files.readAllLines(path, charset);
+			File file = new File(getf.pathAccounts);
+			FileWriter fwriter = new FileWriter(file);
+			CSVWriter writer = new CSVWriter(fwriter);
+			for(String line : lines) {
+				line = line.replace("\"", "");
+				String [] lineContent = line.split(",", 0);
+				if(lineContent[0].equals(cpf)) {
+					double currentValue = Double.parseDouble(lineContent[2]);
+					double add = currentValue * 0.1;
+					currentValue = currentValue + add;
+					lineContent[2] = Double.toString(currentValue);
+					writer.writeNext(lineContent);
+				} else {
+					writer.writeNext(lineContent);
+				}
+			}
+			writer.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
 	public void  BankHome(){
 		int menuOption;
+		ReadFiles();
+		UpdateInvestments();
 		do {	
 			ReadFiles();
 			doubleBalance = Double.parseDouble(balance);
@@ -414,6 +444,7 @@ public class Home {
 				break;
 			case 7:
 				System.out.println("\nFazendo logout...");
+				cpf="";
 				break;
 			default:
 				System.out.println("\nOpção inválida.");
@@ -443,6 +474,7 @@ public class Home {
 				break;
 			case 3:
 				System.out.println("\nFazendo logout...");
+				cpf="";
 				break;
 			default:
 				System.out.println("\nOpção inválida.");
@@ -459,8 +491,9 @@ public class Home {
 			System.out.println("SuperUser Masterbank\n");
 			System.out.println("1 - Consultar Dados de Usuário");
 			System.out.println("2 - Alterar Dados de Usuário");
-			System.out.println("3 - Remover Usuário");
-			System.out.println("4 - Sair");
+			System.out.println("3 - Adicionar Dinheiro para Usuário");
+			System.out.println("4 - Remover Usuário");
+			System.out.println("5 - Sair");
 			System.out.println("\nEscolha uma opção -->");
 			menuOption = scan.nextInt();
 			
@@ -472,14 +505,18 @@ public class Home {
 				adm.ModifyUserData();
 				break;
 			case 3:
-				adm.RemoveUser();
+				adm.AddMoneyToUser();
 				break;
 			case 4:
+				adm.RemoveUser();
+				break;
+			case 5:
 				System.out.println("\nFazendo logout...");
+				cpf="";
 				break;
 			default:
 				System.out.println("\nOpção inválida.");
 			}
-		} while (menuOption != 4);
+		} while (menuOption != 5);
 	}
 }

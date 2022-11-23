@@ -71,7 +71,7 @@ public class AdmMethods {
 				System.out.println("1 - Nome de Usuário");
 				System.out.println("2 - Email");
 				System.out.println("3 - Número de Telefone");
-				System.out.println("4 - Senha de acesso");
+				System.out.println("4 - Senha de Acesso");
 				System.out.println("5 - Sair");
 				System.out.println("\nEscolha uma opção -->");
 				menuOption = scan.nextInt();
@@ -120,8 +120,6 @@ public class AdmMethods {
 						menuOption = 5;
 						break;
 					case 4:
-						int i = 0;
-						do {	
 							System.out.println("\nDigite uma nova senha:");
 							int password = scan.nextInt();
 							System.out.println("\nDigite a sua nova senha novamente:");
@@ -134,7 +132,6 @@ public class AdmMethods {
 							} else {
 								System.out.println("\nAs senhas não coincidem.");
 							}
-						} while(i != 1);
 						menuOption = 5;
 						break;
 					case 5:
@@ -288,6 +285,46 @@ public class AdmMethods {
 			writer.close();
 		} catch (Exception e) {
 			System.out.println("\nOcorreu um erro. Tente novamente mais tarde.");
+		}
+	}
+
+	public void AddMoneyToUser() {
+		System.out.println("\nDigite o cpf do usuário:");
+		String cpf = scan.next();
+		ci.info = cpf;
+		ci.position = 3;
+		int valid = ci.Check();
+		if(valid == 1) {
+			System.out.println("\nQuanto você deseja transferir para a conta do usuário?");
+			double amount = scan.nextDouble();
+			try {
+				Path path = Paths.get(getf.pathAccounts);
+				Charset charset = StandardCharsets.UTF_8;
+				List<String> lines = Files.readAllLines(path, charset);
+				File file = new File(getf.pathAccounts);
+				FileWriter fwriter = new FileWriter(file);
+				CSVWriter writer = new CSVWriter(fwriter);
+				for(String line : lines) {
+					line = line.replace("\"", "");
+					String [] lineContent = line.split(",", 0);
+					String lineCpf = lineContent[0];
+					if(lineCpf.equals(cpf)) {
+						double doubleBalance = Double.parseDouble(lineContent[1]);
+						doubleBalance = doubleBalance + amount;
+						lineContent[1] = Double.toString(doubleBalance);
+						writer.writeNext(lineContent);
+						System.out.println("\nTransferência concluída.");
+					} else {
+						writer.writeNext(lineContent);
+					}
+				}
+				writer.close();
+			} catch (Exception e) {
+				System.out.println("\nOcorreu um erro. Tente novamente mais tarde.");
+				System.out.println(e);
+			}
+		} else {
+			System.out.println("\nUsuário não encontrado.");
 		}
 	}
 }
